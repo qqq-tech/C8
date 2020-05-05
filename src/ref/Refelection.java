@@ -11,7 +11,8 @@ public class Refelection {
 	  copyFields(a1, a2);
 	*/	
 	public static <T> void copyFields(T from, T to) {
-		for (Field f : from.getClass().getFields()) {
+		for (Field f : from.getClass().getDeclaredFields()) {
+			f.setAccessible(true);
 			try {
 				if (isPrimitivish(f.getType())) {
 					f.set(to, f.get(from));

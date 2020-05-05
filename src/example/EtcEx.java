@@ -10,7 +10,7 @@ public class EtcEx {
 
 	public static void main(String[] args) {
 
-		DirSearch.subDirList("C:\\Hyper-V");
+		DirSearch.subDirList(".");
 		Map<String, HashMap<String, String>> res= DirSearch.result;
 		for(String k : res.keySet())
 		{
