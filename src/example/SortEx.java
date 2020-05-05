@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class sort {
+public class SortEx {
 	class Student {
 		int rollno;
 		String name, address;
@@ -46,5 +46,7 @@ public class sort {
 //		Collections.reverse(list); // 주석시 오름차순
 //		return list;
 //	}
+	//  Map<String, Bus> b = busInfos.get(timeInfo);
+	//	Map<String, Bus> sortedMap  = Sort.<String,Bus>sortMap(b);
 
 }
