@@ -1,0 +1,270 @@
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import VO.Bus;
+import VO.Sta;
+import file.Formatter;
+import file.Physics;
+import file.Reader;
+import file.Time;
+import file.Writer;
+
+public class Test3 {
+
+	public static Bus getNextBus(Bus b, Map<String, Bus> target) {
+		Bus maxBus = null;
+		for (String k : target.keySet()) {
+			Bus t = target.get(k);
+			if (b.loc < t.loc) {
+				if (maxBus == null)
+					maxBus = t;
+				else {
+					maxBus = maxBus.loc < t.loc ? maxBus : t;
+				}
+			}
+		}
+
+		return maxBus;
+	}
+
+	public static Bus getBeforeBus(Bus b, Map<String, Bus> target) {
+		Bus minBus = null;
+		for (String k : target.keySet()) {
+			Bus t = target.get(k);
+			if (b.loc > t.loc) {
+				if (minBus == null)
+					minBus = t;
+				else {
+					minBus = minBus.loc > t.loc ? minBus : t;
+				}
+			}
+		}
+		return minBus;
+	}
+
+	public static Bus getCloseBusToStation(int staLoc, Map<String, Bus> target) {
+		Bus minBus = null;
+		for (String k : target.keySet()) {
+			Bus t = target.get(k);
+			if (t.loc < staLoc) {
+				if (minBus == null)
+					minBus = t;
+				else {
+					minBus = minBus.loc > t.loc ? minBus : t;
+				}
+			}
+		}
+		return minBus;
+	}
+
+	public static void main(String[] args) {
+		Reader r = new Reader();
+
+		try {
+			r.openFile("TXT\\", "MISS_LOCATION.TXT");
+			r.readAllLine();
+
+			ArrayList<String> docs = r.docs;
+
+			// gen calc map
+			Map<String, Map<String, Bus>> busInfos = new LinkedHashMap<>();
+			ArrayList<String> printInfo = new ArrayList<>();
+			String[] normalTime = new String[2];
+			String pKey = "";
+			String beforeBus = "";
+			int beforeValue = 0;
+			for (String s : docs) {
+				if ("PRINT".equals(s)) {
+					printInfo.add(pKey);
+				}
+				String[] t = s.split("#");
+				Map<String, Bus> hmB = new LinkedHashMap();
+
+				if (t.length == 1) {
+					busInfos.put(t[0], hmB);
+					pKey = t[0];
+					continue;
+				}
+
+				for (int i = 1; i < t.length; i++) {
+					Bus temp = new Bus();
+					String[] target = t[i].split(",");
+
+					temp.name = target[0];
+					temp.loc = new Integer(target[1]);
+					hmB.put(temp.name, temp);
+					busInfos.put(t[0], hmB);
+				}
+				pKey = t[0];
+				normalTime[0] = normalTime[1];
+				normalTime[1] = t[0];
+			}
+
+			ArrayList<String> res = new ArrayList();
+			for (int i = 0; i < printInfo.size(); i++) {
+				String timeInfo = printInfo.get(i);
+				Map<String, Bus> b = busInfos.get(normalTime[1]);
+				
+				for (String k : b.keySet()) {
+					Bus h = b.get(k);
+					h.nextBus = getNextBus(h, b);
+					h.beforeBus = getBeforeBus(h, b);
+					String resInfo = timeInfo;
+					resInfo += "#" + h.name + "#";
+					if (h.nextBus != null) {
+						Bus aBus = h.nextBus;
+						resInfo += aBus.name + "," + (aBus.loc - h.loc) + "#";
+					} else {
+						resInfo += "NOBUS,00000#";
+					}
+
+					if (h.beforeBus != null) {
+						Bus bBus = h.beforeBus;
+						resInfo += bBus.name + "," + (h.loc - bBus.loc);
+					} else {
+						resInfo += "NOBUS,00000";
+					}
+					res.add(resInfo);
+				}
+			}
+
+			// for (String s : res) {
+			// System.out.println(s);
+			// }
+
+			Reader sta = new Reader();
+			sta.openFile("TXT\\", "STATION_LIMIT_SPEED.TXT");
+			sta.readAllLine();
+			ArrayList<String> staDocs = sta.docs;
+			ArrayList<Sta> staObjects = new ArrayList<>();
+			for (String s : staDocs) {
+				String[] t = s.split("#");
+				Sta so = new Sta();
+				so.name = t[0];
+				so.loc = Integer.parseInt(t[1]);
+				so.limitSpeed = Integer.parseInt(t[2]);
+				staObjects.add(so);
+			}
+
+			ArrayList<String> closeBus = new ArrayList();
+			for (int i = 0; i < printInfo.size(); i++) {
+				String timeInfo = printInfo.get(i);
+
+				Map<String, Bus> b = busInfos.get(normalTime[1]);
+
+				for (Sta so : staObjects) {
+					String sResult = timeInfo + "#" + so.name + "#";
+					Bus bus = getCloseBusToStation(so.loc, b);
+					so.clsoeBus = bus;
+					if (bus == null)
+						sResult += "NOBUS,00000";
+					else
+						sResult += bus.name + "," + Formatter.getFormatString("%05d", (so.loc - bus.loc));
+					closeBus.add(sResult);
+				}
+			}
+
+			Writer w = new Writer();
+			w.openFile("TXT", "ARRIVAL.TXT");
+			w.writeLine(closeBus);
+
+			for (int i = 0; i < printInfo.size(); i++) {
+				String timeInfo = printInfo.get(i);
+				Map<String, Bus> b = busInfos.get(timeInfo);
+
+				// 속도계산
+				Map<String, Bus> n1 = busInfos.get(normalTime[0]);
+				Map<String, Bus> n2 = busInfos.get(normalTime[1]);
+				for (String k : n2.keySet()) {
+					Bus cb = new Bus();
+					cb.name = k;
+					Bus n1b = n1.get(k);
+					Bus n2b = n2.get(k);
+
+					int distance = (n2b.loc - n1b.loc);
+					Date time0 = Time.getStringToTime(normalTime[0]);
+					Date time1 = Time.getStringToTime(normalTime[1]);
+					Date cTime = Time.getStringToTime(timeInfo);
+					Long sec = Time.getDiffTime(time1, time0);
+					Long cTimeDiff = Time.getDiffTime(cTime, time1);
+					cb.speed = Physics.cal_speed(distance, sec);
+					// 현재위치 보정
+					double correctionTime = 0;
+					int lastLoc = n2b.loc;
+					for (Sta so : staObjects) {
+						if (lastLoc < so.loc) {
+							double maxSpeed = Math.min(so.limitSpeed, cb.speed);
+							int diffDist = so.loc - lastLoc;
+							double runningTime = Physics.cal_time(diffDist, maxSpeed);
+							if (correctionTime + runningTime < cTimeDiff) {
+								correctionTime += runningTime;
+								lastLoc += diffDist;
+//								System.out.println("time:" + correctionTime);
+//								System.out.println("loc:" + so.loc);
+							} else {
+								double remainTime = cTimeDiff - correctionTime;
+								double dist = Physics.cal_dist(maxSpeed, remainTime);
+								lastLoc += dist;
+//								System.out.println("time:" + correctionTime);
+//								System.out.println("loc:" + so.loc);
+								continue;
+							}
+						}
+					}
+					cb.loc = lastLoc;
+					b.put(k, cb);
+				}
+
+			}
+
+			ArrayList<String> arrivalTime = new ArrayList();
+			Map<String,Map<String,Date>> arrivalInfos = new LinkedHashMap<String, Map<String,Date>>();
+			for (int i = 0; i < printInfo.size(); i++) {
+				String timeInfo = printInfo.get(i);
+				Map<String, Bus> b = busInfos.get(timeInfo);
+				Sta preSo=null;
+				double preTime=0;
+				for (Sta so : staObjects) {
+					String sResult = timeInfo + "#" + so.name + ","+Formatter.getFormatString("%05d",so.loc)+"#";
+					Bus bus = getCloseBusToStation(so.loc, b);
+					so.clsoeBus = bus;
+					if (bus == null)
+					{
+						arrivalInfos.put("NOBUS", null);
+						sResult += "NOBUS,00000";
+					}
+					else {
+						int remain = 0;
+						if(preSo==null)
+							remain=(so.loc - bus.loc);
+						else 
+							remain=(so.loc - preSo.loc);
+						double time = Physics.cal_time(remain, Math.min(so.limitSpeed, bus.speed)); // error 구간별 계산을 해야함.졸라귀찮게 문제내는구만...c8
+						if(preSo!=null)
+							time+=preTime;
+						Date d = Time.getStringToTime(timeInfo);
+						Date remainTime = Time.addTime(d, (int) time);
+						preTime=time;
+						Map<String,Date> m = new LinkedHashMap<>();
+						m.put(bus.name, remainTime);
+						arrivalInfos.put(so.name, m);
+						sResult += bus.name + "," +bus.loc +"," + Formatter.getFormatString("%05d", remain) + "#" + Time.getTimeToString(remainTime);
+						
+						preSo=so;
+					}
+					arrivalTime.add(sResult);
+					
+					System.out.println(sResult);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+}
