@@ -1,7 +1,7 @@
 package example;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import file.Reader;
 import file.Writer;
@@ -13,7 +13,7 @@ public class FileEx {
 		try {
 			r.openFile("C:\\eclipse\\workspace\\sample\\src\\file\\", "GLineNumberReader.java");
 			r.readAllLine();
-			ArrayList<String> al = r.docs;
+			List<String> al = r.docs;
 			for(String s:al)
 			{
 				System.out.println(s);

@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class Writer {
 	private BufferedWriter bw = null;
@@ -24,7 +24,7 @@ public class Writer {
 		if (bw != null)
 			bw.close();
 	}
-	public void writeLine(ArrayList<String> docs) throws IOException {
+	public void writeLine(List<String> docs) throws IOException {
 		for(String doc:docs)
 		{
 			if(!writeLine(doc))

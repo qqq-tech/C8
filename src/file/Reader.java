@@ -5,11 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Reader {
 	private BufferedReader br = null;
-	public ArrayList<String> docs;
+	public List<String> docs;
 	public Reader() {
 		
 	}
@@ -18,7 +19,7 @@ public class Reader {
 	{
 		File inFile  = new File(path, name);
 		br = new BufferedReader(new FileReader(inFile));
-		docs=new ArrayList<>();
+		docs=new LinkedList<>();
 	}
 	public void finalize() throws IOException {
 		if(br!=null)

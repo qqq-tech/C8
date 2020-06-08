@@ -5,11 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class GLineNumberReader {
 	private LineNumberReader lr = null;
-	public ArrayList<String> docs;
+	public List<String> docs;
 	public GLineNumberReader() {
 
 	}
@@ -17,7 +18,7 @@ public class GLineNumberReader {
 	public void openFile(String path, String name) throws FileNotFoundException {
 		File inFile = new File(path, name);
 		lr = new LineNumberReader(new FileReader(inFile));
-		docs = new ArrayList<>();
+		docs = new LinkedList<>();
 	}
 
 	public void finalize() throws IOException {
