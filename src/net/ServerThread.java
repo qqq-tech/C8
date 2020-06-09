@@ -51,8 +51,9 @@ public class ServerThread extends Thread {
 				writer.println("Server: " + reverseText);
 
 				ResultInterface.setResult(this.getName(), reverseText);
-			} while (!text.equals("bye"));
+			} while (!text.equals("PRINT"));
 
+			ResultInterface.doRun(this.getName());
 		} catch (IOException ex) {
 			System.out.println("Server exception: " + ex.getMessage());
 			ex.printStackTrace();

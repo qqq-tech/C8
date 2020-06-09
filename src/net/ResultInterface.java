@@ -26,4 +26,8 @@ public class ResultInterface {
 	public synchronized static void removeResult(String threadID) {
 		res.remove(threadID);
 	}
+
+	public static void doRun(String threadID) {
+		
+	}
 }
