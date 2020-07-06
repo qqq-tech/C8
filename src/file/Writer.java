@@ -24,23 +24,32 @@ public class Writer {
 		if (bw != null)
 			bw.close();
 	}
+
 	public void writeLine(List<String> docs) throws IOException {
-		for(String doc:docs)
+		try
 		{
-			if(!writeLine(doc))
-			{
-				System.out.println("File 쓰기 오류");
-				throw new IOException();
+			for (String doc : docs) {
+				if (!writeLine(doc)) {
+					System.out.println("File 쓰기 오류");
+					throw new IOException();
+				}
 			}
 		}
-		
+		catch(Exception e)
+		{
+			throw new IOException();
+		}
+		finally
+		{
+			bw.flush();
+		}
 	}
+
 	public boolean writeLine(String line) throws IOException {
 		boolean isSuccess = false;
 		try {
 			bw.write(line);
 			bw.newLine();
-			bw.flush();
 			isSuccess = true;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

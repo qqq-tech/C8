@@ -13,11 +13,17 @@ public class RefEx {
 		test.put("2","2");
 		test.put("3","3");
 		HashMap<String, String> test1 = new HashMap<>();
-		Refelection.copyFields(test, test1);
+		//Refelection.copyFields(test, test1);
 		
 		for(String k: test1.keySet())
 		{
 			System.out.println(k);
 		}
+		
+		
+		//invoke method
+		int []a=new int[] {1,2};
+		Refelection rf= new Refelection();
+		rf.invokeClassMethod("EXT/com/test/lgcns/Calc.clasas", "com.test.lgcns.Calc", "add", a.getClass(), a);
 	}
 }
