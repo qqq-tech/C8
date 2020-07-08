@@ -32,6 +32,28 @@ public class SortEx {
 		}
 	}
 
+	
+	// Map 선언
+//			Map<Integer, String> testMap = new HashMap<Integer, String>();
+//
+//			// Map에 데이터 추가
+//			testMap.put( 1, "apple");
+//			testMap.put( 4, "pineapple");
+//			testMap.put( 2, "orange");
+//			testMap.put( 5, "strawberry");
+//			testMap.put( 3, "melon");
+//
+//			// 키로 정렬
+//			Object[] mapkey = testMap.keySet().toArray();
+//			Arrays.sort(mapkey);
+//
+//			// 결과 출력
+//			for (Integer nKey : testMap.keySet())
+//			{
+//				System.out.println(testMap.get(nKey));
+//			}
+//			
+//			
 	// 별도의 스태틱 함수로 구현
 //	public static List sortByValue(final Map map) {
 //		List<String> list = new ArrayList();

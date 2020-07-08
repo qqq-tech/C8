@@ -1,5 +1,6 @@
 package etc;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -8,8 +9,23 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class Sort {
+	public static<K,V> Map<K, V> sortMapWithTree(Map<K, V> map)
+	{
+		Map<K, V> sm = new TreeMap<>(map);
+		return sm;
+	}
+	
+	public static<K,V> Map<K, V> sortReverseMapWithTree(Map<K, V> map)
+	{
+		Map<K, V> sm = new TreeMap<>(Collections.reverseOrder());
+		sm.putAll(map);
+		return sm;
+	}
+	
 	public static <T> void sortListReverse(List<T> list) {
 		Collections.sort(list, Collections.reverseOrder());
 	}
