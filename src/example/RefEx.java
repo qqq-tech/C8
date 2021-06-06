@@ -24,6 +24,6 @@ public class RefEx {
 		//invoke method
 		int []a=new int[] {1,2};
 		Refelection rf= new Refelection();
-		rf.invokeClassMethod("EXT/com/test/lgcns/Calc.clasas", "com.test.lgcns.Calc", "add", a.getClass(), a);
+		rf.invokeClassMethod("EXT/com/test/Calc.clasas", "com.test.Calc", "add", a.getClass(), a);
 	}
 }
