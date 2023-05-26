@@ -33,8 +33,10 @@ public class JettyServer {
 		 //servletHandler.addServletWithMapping(JettyServlet.class, "/hello");
 		 //server.setHandler(servletHandler);
 
-		// 비동기 IO 처리 //다 무쓸모네..... timeout이 아님
-		// ServletHolder asyncHolder =
+		// 비동기 IO 처리
+		// ServletHolder asyncHolder = new ServletHolder(new JettyServlet());
+		// context.setContextPath("/");
+		// context.addServlet(JettyServlet.class, "/hello");
 		// servletHandler.addServletWithMapping(JettyServlet.class, "/hello");  // /*  path도 됨
 		// asyncHolder.setAsyncSupported(true);
 
