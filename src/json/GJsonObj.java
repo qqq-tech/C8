@@ -1,4 +1,4 @@
-package etc;
+package json;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -11,7 +11,11 @@ import com.google.gson.reflect.TypeToken;
 //public class JObjUtil<T> {
 public class GJsonObj {
 	JsonObject obj;
-
+	
+	public GJsonObj(){
+		obj = new JsonObject();
+	}
+	
 	public String getString(String key) {
 		return obj.get(key).getAsString();
 	}
@@ -20,6 +24,10 @@ public class GJsonObj {
 		return obj.get(key).getAsInt();
 	}
 
+	public boolean has(String key) {
+		return obj.has(key);
+	}
+	
 	public Object getArray(String key, Class type) {
 		Gson gson = new Gson();
         //Type type = new TypeToken<List<String>>() {}.getType();

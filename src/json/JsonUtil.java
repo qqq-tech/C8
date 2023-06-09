@@ -1,4 +1,4 @@
-package etc;
+package json;
 
 import java.lang.reflect.Type;
 

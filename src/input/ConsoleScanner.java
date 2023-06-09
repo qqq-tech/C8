@@ -16,19 +16,19 @@ public class ConsoleScanner {
 
 	public String readLine() {
 		String str = scanner.nextLine();
-		System.out.println("reader value:" + str);
+//		System.out.println("reader value:" + str);
 		return str;
 	}
 
-	public int readInt() {
+	public Integer readInt() {
 		int res = scanner.nextInt();
-		System.out.println("reader value:" + res);
+//		System.out.println("reader value:" + res);
 		return res;
 	}
 
-	public double readDouble() {
+	public Double readDouble() {
 		double res = scanner.nextDouble();
-		System.out.println("reader value:" + res);
+//		System.out.println("reader value:" + res);
 		return res;
 	}
 

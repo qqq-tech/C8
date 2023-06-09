@@ -21,9 +21,8 @@ public class ConsoleReader {
 	}
 
 	public String readLine() throws IOException {
-		System.out.println("please input data:");
 		String str = br.readLine();
-		System.out.println("reader value:" + str);
+//		System.out.println("reader value:" + str);
 		return str;
 	}
 

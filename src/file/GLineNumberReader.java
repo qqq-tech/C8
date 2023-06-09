@@ -16,6 +16,8 @@ public class GLineNumberReader {
 	}
 
 	public void openFile(String path, String name) throws FileNotFoundException {
+		if(lr!=null) return;
+		
 		File inFile = new File(path, name);
 		lr = new LineNumberReader(new FileReader(inFile));
 		docs = new LinkedList<>();

@@ -16,6 +16,8 @@ public class Writer {
 	}
 
 	public void openFile(String path, String name) throws IOException {
+		if (outFile != null)
+			return;
 		outFile = new File(path, name);
 		bw = new BufferedWriter(new FileWriter(outFile));
 	}
@@ -26,21 +28,16 @@ public class Writer {
 	}
 
 	public void writeLine(List<String> docs) throws IOException {
-		try
-		{
+		try {
 			for (String doc : docs) {
 				if (!writeLine(doc)) {
 					System.out.println("File 쓰기 오류");
 					throw new IOException();
 				}
 			}
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			throw new IOException();
-		}
-		finally
-		{
+		} finally {
 			bw.flush();
 		}
 	}

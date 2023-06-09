@@ -11,34 +11,38 @@ import java.util.List;
 public class Reader {
 	private BufferedReader br = null;
 	public List<String> docs;
+
 	public Reader() {
-		
+
 	}
-	
-	public void openFile(String path,String name) throws FileNotFoundException
-	{
-		File inFile  = new File(path, name);
+
+	public void openFile(String path, String name) throws FileNotFoundException {
+		if (br != null)
+			return;
+
+		File inFile = new File(path, name);
 		br = new BufferedReader(new FileReader(inFile));
-		docs=new LinkedList<>();
+		docs = new LinkedList<>();
 	}
+
 	public void finalize() throws IOException {
-		if(br!=null)
+		if (br != null)
 			br.close();
 	}
 
 	public String readAllLine() throws IOException {
-		StringBuilder sb= new StringBuilder();
-	        try {
-	            String line;
-	            while ((line = br.readLine()) != null) {
-	                sb.append(line);
-	                docs.add(line);
-	            }
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return sb.toString();
+		StringBuilder sb = new StringBuilder();
+		try {
+			String line;
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+				docs.add(line);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
 	}
 }

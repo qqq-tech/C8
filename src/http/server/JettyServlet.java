@@ -23,6 +23,9 @@ import org.eclipse.jetty.client.api.ContentProvider;
 import org.eclipse.jetty.http.HttpField;
 import org.eclipse.jetty.http.HttpFields;
 
+import http.client.JettyClient;
+import wrap.DataProcessingWrapper;
+
 public class JettyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -91,13 +94,16 @@ public class JettyServlet extends HttpServlet {
 		executor.schedule(() -> {
 			try {
 
-			    BufferedReader input = new BufferedReader(new InputStreamReader(request.getInputStream()));
-	            StringBuffer buffers= new StringBuffer();
-	            String line;
-	            while ((line= input.readLine()) != null) {
-	            	buffers.append(line);
-	            } 
-	            input.close(); 
+				DataProcessingWrapper.prepareData(request,response);
+				DataProcessingWrapper.solve(request,response);
+				String result = DataProcessingWrapper.genResponse();
+//			    BufferedReader input = new BufferedReader(new InputStreamReader(request.getInputStream()));
+//	            StringBuffer buffers= new StringBuffer();
+//	            String line;
+//	            while ((line= input.readLine()) != null) {
+//	            	buffers.append(line);
+//	            } 
+//	            input.close(); 
 				
 				// response.getWriter().write("Hello!");
 				// response.getWriter().println("<h1>Hello from HelloServlet</h1>");

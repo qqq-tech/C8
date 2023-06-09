@@ -29,7 +29,7 @@ public class JettyClient {
 		return new String(bytes, UTF_8);
 	}
 
-	public static void mClient(String endpoint, HttpMethod method, String data) throws Exception {
+	public void mClient(String endpoint, HttpMethod method, String data) throws Exception {
 		AtomicLong nextId = new AtomicLong();
 		HttpClient httpClient = new HttpClient();
 		httpClient.setConnectTimeout(5_000);
@@ -90,7 +90,7 @@ public class JettyClient {
 		httpClient.stop();
 	}
 
-	public static void sClient(String endpoint, HttpMethod method, String data) throws Exception {
+	public void sClient(String endpoint, HttpMethod method, String data) throws Exception {
 		HttpClient httpClient = new HttpClient();
 		httpClient.setConnectTimeout(60_000);
 		httpClient.setIdleTimeout(60_000);
