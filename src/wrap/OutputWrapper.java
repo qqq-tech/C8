@@ -48,7 +48,7 @@ public class OutputWrapper {
 
 	public void writeDoc(String endpoint, HttpMethod method, String data) throws Exception {
 		if(this._oType == oType.HTTP)
-			((JettyMClient) writer).mClient(endpoint, method, data);
+			((JettyClient) writer).sClient(endpoint, method, data);
 		else
 			throw new Exception("Not HTTP Type");
 	}
