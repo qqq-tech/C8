@@ -8,6 +8,7 @@ import file.GLineNumberReader;
 import file.Reader;
 import file.Writer;
 import http.client.JettyClient;
+import http.client.JettyMClient;
 import http.server.JettyServer;
 import input.ConsoleScanner;
 import wrap.InputWrapper.dType;
@@ -47,7 +48,7 @@ public class OutputWrapper {
 
 	public void writeDoc(String endpoint, HttpMethod method, String data) throws Exception {
 		if(this._oType == oType.HTTP)
-			((JettyClient) writer).mClient(endpoint, method, data);
+			((JettyMClient) writer).mClient(endpoint, method, data);
 		else
 			throw new Exception("Not HTTP Type");
 	}

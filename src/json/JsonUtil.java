@@ -1,12 +1,8 @@
 package json;
 
-import java.lang.reflect.Type;
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 
 public class JsonUtil<T> {
 	public static <T> T convertToObj(String from, Class<T> to ) {
@@ -24,10 +20,10 @@ public class JsonUtil<T> {
 		return gson.toJson(from);
 	}
 	
-	public static GJsonObj getJsonObject(String json) {
+	public static GObj getJsonObject(String json) {
 		Gson gson = new Gson();
 		JsonObject obj= JsonParser.parseString(json).getAsJsonObject();
-		GJsonObj jobj = new GJsonObj();
+		GObj jobj = new GObj();
 		jobj.obj=obj;
 		return jobj;
 	}
