@@ -14,8 +14,7 @@ public class Template {
 		String res= iw.<String>getData("","");
 		// data : file, http type : json, text... 
 		DataProcessingWrapper dsw = new DataProcessingWrapper();
-		
-		dsw.prepareData("");
+		dsw.<String>prepareData(res);
 		dsw.solve();
 		dsw.genResponse();
 		
