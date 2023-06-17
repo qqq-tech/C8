@@ -93,21 +93,11 @@ public class JettyServlet extends HttpServlet {
 		asyncContext.setTimeout(3_000); // 서버에서 3초 이내 작업 미종료시 client로 응답보냄. but 아래 excutor는 계속 동작하는 상태로 남아있음,.
 		executor.schedule(() -> {
 			try {
-
-				DataProcessingWrapper.prepareData(request,response);
-				DataProcessingWrapper.solve(request,response);
-				String result = DataProcessingWrapper.genResponse();
-//			    BufferedReader input = new BufferedReader(new InputStreamReader(request.getInputStream()));
-//	            StringBuffer buffers= new StringBuffer();
-//	            String line;
-//	            while ((line= input.readLine()) != null) {
-//	            	buffers.append(line);
-//	            } 
-//	            input.close(); 
-				
-				// response.getWriter().write("Hello!");
-				// response.getWriter().println("<h1>Hello from HelloServlet</h1>");
-				asyncContext.getResponse().getWriter().print("");
+				DataProcessingWrapper dsw = new DataProcessingWrapper();
+				dsw.prepareData(request,response);
+				dsw.solve(request,response);
+				String result = dsw.genResponse();
+				asyncContext.getResponse().getWriter().print(result);
 				asyncContext.getResponse().getWriter().flush();
 			} catch (Exception ex) {
 				System.out.println(ex);
